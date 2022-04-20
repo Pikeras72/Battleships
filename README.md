@@ -6,7 +6,7 @@ to establish your boats, locate a place, enter the row first (with a letter)
 and then with the column (with a number), once you have choosed a position for your boat you can choose the direction
 the boat will take (pointing to the north, the east, the south or the west).
 
-The boats of the computer are generated randomly, you won't know where thei boats
+The boats of the computer are generated randomly, you won't know where the enemy boats
 are.
 
 Each turn you have the opportunity to shoot a position on the computer's map, the

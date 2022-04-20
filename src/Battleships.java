@@ -36,27 +36,29 @@ public class Battleships {
     }
 
     public static void cartel(){
-        System.out.println("\n\t\t  ************************");
-        System.out.println("\t\t  |   TOCADO Y HUNDIDO   |");
-        System.out.println("\t\t  |         POR          |");
-        System.out.println("\t\t  |     DIEGO RUIZ P.    |");
-        System.out.println("\t\t  ************************");
+
+        System.out.println(",-----.          ,--.   ,--. ,--.           ,--.    ,--.             ");
+        System.out.println("|  |) /_ ,--,--,-'  '-,-'  '-|  |,---. ,---.|  ,---.`--',---. ,---.  ");
+        System.out.println("|  .-.  ' ,-.  '-.  .-'-.  .-|  | .-. (  .-'|  .-.  ,--| .-. (  .-'                 |         BY           |");
+        System.out.println("|  '--' \\ '-'  | |  |   |  | |  \\   --.-'  `|  | |  |  | '-' .-'  `)                |     DIEGO RUIZ P.    |");
+        System.out.println("`------' `--`--' `--'   `--' `--'`----`----'`--' `--`--|  |-'`----'  ");
+        System.out.println("                                                      `--'          ");
     }
 
     public static int seleccionModo(){
-        int elección = -1;
+        int eleccion = -1;
         System.out.println("\n\t¿Que modo de juego te gustaría probar?");
         System.out.println("\n\t1 - Clásico (3 Barcos distintos y 2 igual)\t\t2 - Intermedio (2 Barcos distintos y 3 iguales)\n\n\t3- Avanzado (1 Barcos distintos y 4 iguales)\t4 - Complicado (5 Barcos iguales) \n");
         do{
             try {
                 System.out.print("Elección: ");
-                elección = Integer.parseInt(teclado.nextLine());
+                eleccion = Integer.parseInt(teclado.nextLine());
             }catch (NumberFormatException ex){
                 System.out.println("Dato no válido "+ex.getMessage());
             }
-        }while (elección < 1 || elección > 4);
-        System.out.println("\nPerfecto, usted ha elejido la opción: "+elección);
-        return elección;
+        }while (eleccion < 1 || eleccion > 4);
+        System.out.println("\nPerfecto, usted ha elejido la opción: "+ eleccion);
+        return eleccion;
     }
 
     public static void iniciarTablero(int[][] tablero){
