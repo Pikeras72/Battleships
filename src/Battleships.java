@@ -4,9 +4,9 @@ public class Battleships {
 
     static Scanner teclado = new Scanner(System.in);
 
-    public static void main (String[] args){Battleships.ejecutar();}
+    public static void main (String[] args){Battleships.execute();}
 
-    public static void ejecutar(){
+    public static void execute(){
         int[][] playerTable = new int[10][10];                         //Create the player's table
         int[][] computerTable = new int[10][10];                       //Create the computer's table
         Battleships.banner();                                             //Print the game banner
@@ -472,60 +472,60 @@ public class Battleships {
 
     public static int[][] establishBoats(int[][] table, PlayersBoats playerBoats){
         int counter = 0, position = -1, boatToPlace = -1, option = -1, row;
-        boolean tengoBarco = false;
-        String letraRecogida;
+        boolean gotBoat = false;
+        String letterReaded;
         Boat boatActual = null;
         while (counter != 5){
-            System.out.print("\nIntroduzca una fila para colocar su barco [A..J]: ");
-            letraRecogida = teclado.next();
-            row = Battleships.readLetterPosition(letraRecogida);
-            int columna = Battleships.readNumberPosition(1,10);
+            System.out.print("\nIntroduce a row to place your boat [A..J]: ");
+            letterReaded = teclado.next();
+            row = Battleships.readLetterPosition(letterReaded);
+            int column = Battleships.readNumberPosition(1,10);
             do {
                 try {
-                    System.out.print("\n¿Cuál es el tamaño del barco que quieres colocar? ");
+                    System.out.print("\n¿Length of the boat you want to place? ");
                     boatToPlace = Integer.parseInt(teclado.next());
                 }catch (NumberFormatException ex){
-                    System.out.print("Dato no válido "+ex.getMessage());
+                    System.out.print("Invalid data "+ex.getMessage());
                 }
             }while (boatToPlace == -1);
             for (int i = 0; i < playerBoats.getBoatsNum(); i++){
                 if (playerBoats.getBarcos()[i].getBoatLength() == boatToPlace){
                     boatActual = playerBoats.getBarcos()[i];
                     position = i;
-                    tengoBarco= true;
+                    gotBoat = true;
                     break;
                 }
             }
-            if (tengoBarco){
-                System.out.print("\n¿Como lo quieres colocar?");
-                System.out.print("\n1 - Hacia arriba\t\t\t2 - Hacia abajo\n3 - Hacia la izquierda\t\t4 - Hacia la derecha");
+            if (gotBoat){
+                System.out.print("\n¿What direction should it take?");
+                System.out.print("\n1 - Pointing North\t\t\t2 - Pointing South\n3 - Pointing West\t\t\t4 - Pointing East");
                 do {
                     try {
-                        System.out.print("\nElección: ");
+                        System.out.print("\nElection: ");
                         option = Integer.parseInt(teclado.next());
                     }catch (NumberFormatException ex){
-                        System.out.println("Dato no válido "+ex.getMessage());
+                        System.out.println("Invalid data "+ex.getMessage());
                     }
                 }while (option == -1);
-                boolean comprobacion = Battleships.checkPosition(table, option, row,columna, boatToPlace,"player", boatActual);
-                if (comprobacion){
+                boolean check = Battleships.checkPosition(table, option, row, column, boatToPlace,"player", boatActual);
+                if (check){
                     playerBoats.moveBoat(position);
                     counter++;
                     if (counter == 5){
-                        System.out.println("\nHas puesto: "+ counter +" de 5 barcos");
+                        System.out.println("\nYou have placed: "+ counter +" out of 5 boats");
                     }
                     else {
-                        System.out.println("\nHas puesto: "+ counter +" de 5 barcos\n");
+                        System.out.println("\nYou have placed: "+ counter +" out of 5 boats\n");
                     }
                 }
             }
             else{
-                System.out.println("\nNo dispone de barcos de tamaño "+ boatToPlace +"\n");
+                System.out.println("\nThere are not more boats of this length: "+ boatToPlace +"\n");
             }
-            tengoBarco = false;
+            gotBoat = false;
             boatToPlace = -1;
             option = -1;
-            System.out.println("Tablero Jugador");
+            System.out.println("Player Table");
             Battleships.showTable(table);
         }
         return table;
@@ -550,8 +550,8 @@ public class Battleships {
             }
             if (haveBoat){
                 int option = (int) (Math.random()*(5 - 1)) + 1;
-                boolean comprobacion = Battleships.checkPosition(table, option, row, column, boatToPlace,"computer", actualBoat);
-                if (comprobacion){
+                boolean check = Battleships.checkPosition(table, option, row, column, boatToPlace,"computer", actualBoat);
+                if (check){
                     computerBoats.moveBoat(position);
                     counter++;
                 }
@@ -562,7 +562,7 @@ public class Battleships {
     }
 
     public static int readLetterPosition(String letterOption){
-        int option = -1;
+        int option;
         String letters = "ABCDEFGHIJ";
         do {
             for (int i = 0; i < letters.length(); i++){
