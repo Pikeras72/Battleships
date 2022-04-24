@@ -39,13 +39,13 @@ public class Battleships {
         System.out.println("|  .-.  ' ,-.  '-.  .-'-.  .-|  | .-. (  .-'|  .-.  ,--| .-. (  .-'                 |         BY           |");
         System.out.println("|  '--' \\ '-'  | |  |   |  | |  \\   --.-'  `|  | |  |  | '-' .-'  `)                |     DIEGO RUIZ P.    |");
         System.out.println("`------' `--`--' `--'   `--' `--'`----`----'`--' `--`--|  |-'`----'  ");
-        System.out.println("                                                      `--'          ");
+        System.out.println("                                                       `--'          ");
     }
 
     public static int modeSelection(){
         int election = -1;
         System.out.println("\n\tWhich mode would you like to chose?");                //Ask the player to choose a game mode
-        System.out.println("\n\t1 - Classic (3 different boats and 2 equals)\t\t2 - Intermediate (2 different boats and 3 equals)\n\n\t3- Advanced (1 different boats and 4 equals)\t4 - Complicated (5 equal boats) \n");
+        System.out.println("\n\t1 - Classic (3 different boats and 2 equals)\t\t2 - Intermediate (2 different boats and 3 equals)\n\n\t3- Advanced (1 different boats and 4 equals)\t\t4 - Complicated (5 equal boats) \n");
         do{                                                                              //While the player have not chose a mode...
             try {
                 System.out.print("Election: ");
