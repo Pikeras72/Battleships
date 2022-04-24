@@ -1,5 +1,5 @@
 import java.util.Scanner;
-//HECHO POR DIEGO RUIZ PIQUERAS
+//Made by: DIEGO RUIZ PIQUERAS
 public class Battleships {
 
     static Scanner teclado = new Scanner(System.in);
@@ -7,36 +7,33 @@ public class Battleships {
     public static void main (String[] args){Battleships.ejecutar();}
 
     public static void ejecutar(){
-        int[][] tableroJugador = new int[10][10];
-        int[][] tableroOrdenador = new int[10][10];
-        Battleships.cartel();
-        int x = Battleships.seleccionModo();
-        Battleships.iniciarTablero(tableroJugador);
-        Battleships.iniciarTablero(tableroOrdenador);
-        if (x == 1){
-            System.out.print("\nUsted dispone de estos barcos:\n");
+        int[][] playerTable = new int[10][10];                         //Create the player's table
+        int[][] computerTable = new int[10][10];                       //Create the computer's table
+        Battleships.banner();                                             //Print the game banner
+        int x = Battleships.modeSelection();                              //Ask for a game mode
+        if (x == 1){                                                      //Game mode 1
+            System.out.print("\nBoats available:\n");
             System.out.print("\n*****   ****   ***   **   **\n\n");
-            Battleships.modo1(tableroJugador, tableroOrdenador);
+            Battleships.mode1(playerTable, computerTable);
         }
-        else if (x == 2){
-            System.out.print("\nUsted dispone de estos barcos:\n");
+        else if (x == 2){                                                 //Game mode 2
+            System.out.print("\nBoats available:\n");
             System.out.print("\n****   ***   **   **   **\n");
-            Battleships.modo2(tableroJugador, tableroOrdenador);
+            Battleships.mode2(playerTable, computerTable);
         }
-        else if (x == 3){
-            System.out.print("\nUsted dispone de estos barcos:\n");
+        else if (x == 3){                                                 //Game mode 3
+            System.out.print("\nBoats available:\n");
             System.out.print("\n***   **   **   **   **\n\n");
-            Battleships.modo3(tableroJugador, tableroOrdenador);
+            Battleships.mode3(playerTable, computerTable);
         }
-        else{
-            System.out.print("\nUsted dispone de estos barcos:\n");
+        else{                                                             //Game mode 4
+            System.out.print("\nBoats available:\n");
             System.out.print("\n**   **   **   **   **\n\n");
-            Battleships.modo4(tableroJugador, tableroOrdenador);
+            Battleships.mode4(playerTable, computerTable);
         }
     }
 
-    public static void cartel(){
-
+    public static void banner(){
         System.out.println(",-----.          ,--.   ,--. ,--.           ,--.    ,--.             ");
         System.out.println("|  |) /_ ,--,--,-'  '-,-'  '-|  |,---. ,---.|  ,---.`--',---. ,---.  ");
         System.out.println("|  .-.  ' ,-.  '-.  .-'-.  .-|  | .-. (  .-'|  .-.  ,--| .-. (  .-'                 |         BY           |");
@@ -45,377 +42,331 @@ public class Battleships {
         System.out.println("                                                      `--'          ");
     }
 
-    public static int seleccionModo(){
-        int eleccion = -1;
-        System.out.println("\n\t¿Que modo de juego te gustaría probar?");
-        System.out.println("\n\t1 - Clásico (3 Barcos distintos y 2 igual)\t\t2 - Intermedio (2 Barcos distintos y 3 iguales)\n\n\t3- Avanzado (1 Barcos distintos y 4 iguales)\t4 - Complicado (5 Barcos iguales) \n");
-        do{
+    public static int modeSelection(){
+        int election = -1;
+        System.out.println("\n\tWhich mode would you like to chose?");                //Ask the player to choose a game mode
+        System.out.println("\n\t1 - Classic (3 different boats and 2 equals)\t\t2 - Intermediate (2 different boats and 3 equals)\n\n\t3- Advanced (1 different boats and 4 equals)\t4 - Complicated (5 equal boats) \n");
+        do{                                                                              //While the player have not chose a mode...
             try {
-                System.out.print("Elección: ");
-                eleccion = Integer.parseInt(teclado.nextLine());
-            }catch (NumberFormatException ex){
-                System.out.println("Dato no válido "+ex.getMessage());
+                System.out.print("Election: ");
+                election = Integer.parseInt(teclado.nextLine());                         //Store the player's election
+            }catch (NumberFormatException ex){                                           //If the Integer.parseInt() fails because the input has a letter or a symbol...
+                System.out.println("Invalid data "+ex.getMessage());                   //Notify the not valid input
             }
-        }while (eleccion < 1 || eleccion > 4);
-        System.out.println("\nPerfecto, usted ha elejido la opción: "+ eleccion);
-        return eleccion;
+        }while (election < 1 || election > 4);                                           //While the election is not one the program asked for (1,2,3,4)...
+        System.out.println("\nPerfect. This your election: "+ election);        //Shows the election the player have chosen
+        return election;
     }
 
-    public static void iniciarTablero(int[][] tablero){
-        for (int fila = 0; fila < 10; fila++) {
-            for (int columna = 0; columna < 10; columna++) {
-                tablero[fila][columna] = 0;
-            }
-        }
+    public static void mode1(int [][] playerTable, int[][] computerTable){
+        Boat boatp0 = new Boat(5);
+        Boat boatp1 = new Boat(4);
+        Boat boatp2 = new Boat(3);
+        Boat boatp3 = new Boat(2);
+        Boat boatp4 = new Boat(2);
+        Boat boatc0 = new Boat(5);
+        Boat boatc1 = new Boat(4);
+        Boat boatc2 = new Boat(3);
+        Boat boatc3 = new Boat(2);
+        Boat boatc4 = new Boat(2);
+        PlayersBoats playerBoats = new PlayersBoats();
+        PlayersBoats computerBoats = new PlayersBoats();
+        playerBoats.addBoat(boatp0);
+        playerBoats.addBoat(boatp1);
+        playerBoats.addBoat(boatp2);
+        playerBoats.addBoat(boatp3);
+        playerBoats.addBoat(boatp4);
+        computerBoats.addBoat(boatc0);
+        computerBoats.addBoat(boatc1);
+        computerBoats.addBoat(boatc2);
+        computerBoats.addBoat(boatc3);
+        computerBoats.addBoat(boatc4);
+        play(playerTable,computerTable,playerBoats,computerBoats);
     }
 
-    public static void modo1(int [][] tableroJugador,int[][] tableroOrdenador){
-        Barco barcoj0 = new Barco(5);
-        Barco barcoj1 = new Barco(4);
-        Barco barcoj2 = new Barco(3);
-        Barco barcoj3 = new Barco(2);
-        Barco barcoj4 = new Barco(2);
-        Barco barcoo0 = new Barco(5);
-        Barco barcoo1 = new Barco(4);
-        Barco barcoo2 = new Barco(3);
-        Barco barcoo3 = new Barco(2);
-        Barco barcoo4 = new Barco(2);
-        BarcosJugador barcosJugador = new BarcosJugador();
-        BarcosJugador barcosOrdenador = new BarcosJugador();
-        barcosJugador.añadirBarco(barcoj0);
-        barcosJugador.añadirBarco(barcoj1);
-        barcosJugador.añadirBarco(barcoj2);
-        barcosJugador.añadirBarco(barcoj3);
-        barcosJugador.añadirBarco(barcoj4);
-        barcosOrdenador.añadirBarco(barcoo0);
-        barcosOrdenador.añadirBarco(barcoo1);
-        barcosOrdenador.añadirBarco(barcoo2);
-        barcosOrdenador.añadirBarco(barcoo3);
-        barcosOrdenador.añadirBarco(barcoo4);
-        System.out.println("Tablero Jugador");
-        Battleships.mostrarTablero(tableroJugador);
-        tableroJugador = establecerBarcos(tableroJugador, barcosJugador);
-        tableroOrdenador = establecerBarcosOrdenador(tableroOrdenador, barcosOrdenador);
-        System.out.println("\n\nTablero Ordenador");
-        Battleships.mostrarTableroOculto(tableroOrdenador);
-        while (barcosJugador.getNumHundidos() != 5 && barcosOrdenador.getNumHundidos() != 5){
-            tableroOrdenador = turnoJugador(tableroOrdenador, tableroJugador, barcosOrdenador);
-            if (barcosOrdenador.getNumHundidos() != 5){
-                tableroJugador = turnoOrdenador(tableroJugador, false,  false,0,-1, -1, barcosJugador, barcosOrdenador);
-                Battleships.mostrarTablero(tableroJugador);
+    public static void mode2(int [][] playerTable, int[][] computerTable){
+        Boat boatp0 = new Boat(4);
+        Boat boatp1 = new Boat(3);
+        Boat boatp2 = new Boat(2);
+        Boat boatp3 = new Boat(2);
+        Boat boatp4 = new Boat(2);
+        Boat boatc0 = new Boat(4);
+        Boat boatc1 = new Boat(3);
+        Boat boatc2 = new Boat(2);
+        Boat boatc3 = new Boat(2);
+        Boat boatc4 = new Boat(2);
+        PlayersBoats playerBoats = new PlayersBoats();
+        PlayersBoats computerBoats = new PlayersBoats();
+        playerBoats.addBoat(boatp0);
+        playerBoats.addBoat(boatp1);
+        playerBoats.addBoat(boatp2);
+        playerBoats.addBoat(boatp3);
+        playerBoats.addBoat(boatp4);
+        computerBoats.addBoat(boatc0);
+        computerBoats.addBoat(boatc1);
+        computerBoats.addBoat(boatc2);
+        computerBoats.addBoat(boatc3);
+        computerBoats.addBoat(boatc4);
+        play(playerTable, computerTable, playerBoats, computerBoats);
+    }
+
+    public static void mode3(int [][] playerTable, int[][] computerTable){
+        Boat boatp0 = new Boat(3);
+        Boat boatp1 = new Boat(2);
+        Boat boatp2 = new Boat(2);
+        Boat boatp3 = new Boat(2);
+        Boat boatp4 = new Boat(2);
+        Boat boatc0 = new Boat(3);
+        Boat boatc1 = new Boat(2);
+        Boat boatc2 = new Boat(2);
+        Boat boatc3 = new Boat(2);
+        Boat boatc4 = new Boat(2);
+        PlayersBoats playerBoats = new PlayersBoats();
+        PlayersBoats computerBoats = new PlayersBoats();
+        playerBoats.addBoat(boatp0);
+        playerBoats.addBoat(boatp1);
+        playerBoats.addBoat(boatp2);
+        playerBoats.addBoat(boatp3);
+        playerBoats.addBoat(boatp4);
+        computerBoats.addBoat(boatc0);
+        computerBoats.addBoat(boatc1);
+        computerBoats.addBoat(boatc2);
+        computerBoats.addBoat(boatc3);
+        computerBoats.addBoat(boatc4);
+        play(playerTable, computerTable, playerBoats, computerBoats);
+    }
+
+    public static void mode4(int [][] playerTable, int[][] computerTable){
+        Boat boatp0 = new Boat(2);
+        Boat boatp1 = new Boat(2);
+        Boat boatp2 = new Boat(2);
+        Boat boatp3 = new Boat(2);
+        Boat boatp4 = new Boat(2);
+        Boat boatc0 = new Boat(2);
+        Boat boatc1 = new Boat(2);
+        Boat boatc2 = new Boat(2);
+        Boat boatc3 = new Boat(2);
+        Boat boatc4 = new Boat(2);
+        PlayersBoats playerBoats = new PlayersBoats();
+        PlayersBoats computerBoats = new PlayersBoats();
+        playerBoats.addBoat(boatp0);
+        playerBoats.addBoat(boatp1);
+        playerBoats.addBoat(boatp2);
+        playerBoats.addBoat(boatp3);
+        playerBoats.addBoat(boatp4);
+        computerBoats.addBoat(boatc0);
+        computerBoats.addBoat(boatc1);
+        computerBoats.addBoat(boatc2);
+        computerBoats.addBoat(boatc3);
+        computerBoats.addBoat(boatc4);
+        play(playerTable, computerTable, playerBoats, computerBoats);
+    }
+
+    public static void play(int[][] playerTable, int[][] computerTable, PlayersBoats playerBoats, PlayersBoats computerBoats){
+        System.out.println("Player Table");
+        Battleships.showTable(playerTable);
+        playerTable = establishBoats(playerTable, playerBoats);
+        computerTable = establishComputerBoats(computerTable, computerBoats);
+        System.out.println("\n\nComputer Table");
+        Battleships.showHiddenTable(computerTable);
+        while (playerBoats.getSunkenNum() != 5 && computerBoats.getSunkenNum() != 5){
+            computerTable = playerTurn(computerTable, playerTable, computerBoats);
+            if (computerBoats.getSunkenNum() != 5){
+                playerTable = turnoOrdenador(playerTable, false,false,0, -1, -1, playerBoats);
+                Battleships.showTable(playerTable);
                 System.out.println("\n");
-                Battleships.mostrarTableroOculto(tableroOrdenador);
+                Battleships.showHiddenTable(computerTable);
             }
         }
     }
 
-    public static void modo2(int [][] tableroJugador,int[][] tableroOrdenador){
-        Barco barcoj0 = new Barco(4);
-        Barco barcoj1 = new Barco(3);
-        Barco barcoj2 = new Barco(2);
-        Barco barcoj3 = new Barco(2);
-        Barco barcoj4 = new Barco(2);
-        Barco barcoo0 = new Barco(4);
-        Barco barcoo1 = new Barco(3);
-        Barco barcoo2 = new Barco(2);
-        Barco barcoo3 = new Barco(2);
-        Barco barcoo4 = new Barco(2);
-        BarcosJugador barcosJugador = new BarcosJugador();
-        BarcosJugador barcosOrdenador = new BarcosJugador();
-        barcosJugador.añadirBarco(barcoj0);
-        barcosJugador.añadirBarco(barcoj1);
-        barcosJugador.añadirBarco(barcoj2);
-        barcosJugador.añadirBarco(barcoj3);
-        barcosJugador.añadirBarco(barcoj4);
-        barcosOrdenador.añadirBarco(barcoo0);
-        barcosOrdenador.añadirBarco(barcoo1);
-        barcosOrdenador.añadirBarco(barcoo2);
-        barcosOrdenador.añadirBarco(barcoo3);
-        barcosOrdenador.añadirBarco(barcoo4);
-        System.out.println("Tablero Jugador");
-        Battleships.mostrarTablero(tableroJugador);
-        tableroJugador = establecerBarcos(tableroJugador, barcosJugador);
-        tableroOrdenador = establecerBarcosOrdenador(tableroOrdenador, barcosOrdenador);
-        System.out.println("\n\nTablero Ordenador");
-        Battleships.mostrarTableroOculto(tableroOrdenador);
-        while (barcosJugador.getNumHundidos() != 5 && barcosOrdenador.getNumHundidos() != 5){
-            tableroOrdenador = turnoJugador(tableroOrdenador, tableroJugador, barcosOrdenador);
-            if (barcosOrdenador.getNumHundidos() != 5){
-                tableroJugador = turnoOrdenador(tableroJugador, false,false,0, -1, -1, barcosJugador, barcosOrdenador);
-                Battleships.mostrarTablero(tableroJugador);
-                System.out.println("\n");
-                Battleships.mostrarTableroOculto(tableroOrdenador);
-            }
-        }
-    }
-
-    public static void modo3(int [][] tableroJugador,int[][] tableroOrdenador){
-        Barco barcoj0 = new Barco(3);
-        Barco barcoj1 = new Barco(2);
-        Barco barcoj2 = new Barco(2);
-        Barco barcoj3 = new Barco(2);
-        Barco barcoj4 = new Barco(2);
-        Barco barcoo0 = new Barco(3);
-        Barco barcoo1 = new Barco(2);
-        Barco barcoo2 = new Barco(2);
-        Barco barcoo3 = new Barco(2);
-        Barco barcoo4 = new Barco(2);
-        BarcosJugador barcosJugador = new BarcosJugador();
-        BarcosJugador barcosOrdenador = new BarcosJugador();
-        barcosJugador.añadirBarco(barcoj0);
-        barcosJugador.añadirBarco(barcoj1);
-        barcosJugador.añadirBarco(barcoj2);
-        barcosJugador.añadirBarco(barcoj3);
-        barcosJugador.añadirBarco(barcoj4);
-        barcosOrdenador.añadirBarco(barcoo0);
-        barcosOrdenador.añadirBarco(barcoo1);
-        barcosOrdenador.añadirBarco(barcoo2);
-        barcosOrdenador.añadirBarco(barcoo3);
-        barcosOrdenador.añadirBarco(barcoo4);
-        System.out.println("Tablero Jugador");
-        Battleships.mostrarTablero(tableroJugador);
-        tableroJugador = establecerBarcos(tableroJugador, barcosJugador);
-        tableroOrdenador = establecerBarcosOrdenador(tableroOrdenador, barcosOrdenador);
-        System.out.println("\n\nTablero Ordenador");
-        Battleships.mostrarTableroOculto(tableroOrdenador);
-        while (barcosJugador.getNumHundidos() != 5 && barcosOrdenador.getNumHundidos() != 5){
-            tableroOrdenador = turnoJugador(tableroOrdenador, tableroJugador, barcosOrdenador);
-            if (barcosOrdenador.getNumHundidos() != 5){
-                tableroJugador = turnoOrdenador(tableroJugador, false,false,0, -1, -1, barcosJugador, barcosOrdenador);
-                Battleships.mostrarTablero(tableroJugador);
-                System.out.println("\n");
-                Battleships.mostrarTableroOculto(tableroOrdenador);
-            }
-        }
-    }
-
-    public static void modo4(int [][] tableroJugador,int[][] tableroOrdenador){
-        Barco barcoj0 = new Barco(2);
-        Barco barcoj1 = new Barco(2);
-        Barco barcoj2 = new Barco(2);
-        Barco barcoj3 = new Barco(2);
-        Barco barcoj4 = new Barco(2);
-        Barco barcoo0 = new Barco(2);
-        Barco barcoo1 = new Barco(2);
-        Barco barcoo2 = new Barco(2);
-        Barco barcoo3 = new Barco(2);
-        Barco barcoo4 = new Barco(2);
-        BarcosJugador barcosJugador = new BarcosJugador();
-        BarcosJugador barcosOrdenador = new BarcosJugador();
-        barcosJugador.añadirBarco(barcoj0);
-        barcosJugador.añadirBarco(barcoj1);
-        barcosJugador.añadirBarco(barcoj2);
-        barcosJugador.añadirBarco(barcoj3);
-        barcosJugador.añadirBarco(barcoj4);
-        barcosOrdenador.añadirBarco(barcoo0);
-        barcosOrdenador.añadirBarco(barcoo1);
-        barcosOrdenador.añadirBarco(barcoo2);
-        barcosOrdenador.añadirBarco(barcoo3);
-        barcosOrdenador.añadirBarco(barcoo4);
-        System.out.println("Tablero Jugador");
-        Battleships.mostrarTablero(tableroJugador);
-        tableroJugador = establecerBarcos(tableroJugador, barcosJugador);
-        tableroOrdenador = establecerBarcosOrdenador(tableroOrdenador, barcosOrdenador);
-        System.out.println("\n\nTablero Ordenador");
-        Battleships.mostrarTableroOculto(tableroOrdenador);
-        while (barcosJugador.getNumHundidos() != 5 && barcosOrdenador.getNumHundidos() != 5){
-            tableroOrdenador = turnoJugador(tableroOrdenador, tableroJugador, barcosOrdenador);
-            if (barcosOrdenador.getNumHundidos() != 5){
-                tableroJugador = turnoOrdenador(tableroJugador, false,false,0, -1, -1, barcosJugador, barcosOrdenador);
-                Battleships.mostrarTablero(tableroJugador);
-                System.out.println("\n");
-                Battleships.mostrarTableroOculto(tableroOrdenador);
-            }
-        }
-    }
-
-    public static int[][] turnoJugador(int [][] tableroOrdenador, int[][] tableroJugador, BarcosJugador barcosOrdenador){
-        Barco barcoTocado = null;
-        String letras = "ABCDEFGHIJ";
-        boolean hundido = false;
-        int fila;
-        String letraRecogida;
-        System.out.print("Introduzca una fila [A..J]: ");
-        letraRecogida = teclado.next();
-        fila = Battleships.leerPosicionLetras(letraRecogida);
-        letraRecogida = String.valueOf(letras.charAt(fila-1));
-        int columna = Battleships.leerPosicionNumeros(1,10);
-        if (tableroOrdenador[fila-1][columna-1] == 1){
-            tableroOrdenador[fila-1][columna-1] = 2;
-            for (int i = 0; i < barcosOrdenador.getNumColocados(); i++){
-                for (int j = 0; j < barcosOrdenador.getBarcosColocados()[i].getLonguitud(); j++){
-                    if (barcosOrdenador.getBarcosColocados()[i].getPosicionFila()[j] == fila-1 && barcosOrdenador.getBarcosColocados()[i].getPosicionColumna()[j] == columna-1){
-                        barcoTocado = barcosOrdenador.getBarcosColocados()[i];
-                        barcoTocado.tocar();
-                        if (barcoTocado.getTocado() == barcoTocado.getLonguitud()){
-                            barcosOrdenador.hundirBarco(i);
-                            hundido = true;
+    public static int[][] playerTurn(int [][] computerTable, int[][] playerTable, PlayersBoats computerBoats){
+        Boat touched = null;
+        String letters = "ABCDEFGHIJ";
+        boolean sunken = false;
+        int row;
+        String pickedLetter;
+        System.out.print("Introduce a row [A..J]: ");
+        pickedLetter = teclado.next();
+        row = Battleships.readLetterPosition(pickedLetter);
+        pickedLetter = String.valueOf(letters.charAt(row -1));
+        int column = Battleships.readNumberPosition(1,10);
+        if (computerTable[row -1][column -1] == 1){
+            computerTable[row -1][column -1] = 2;
+            for (int i = 0; i < computerBoats.getPlacedNum(); i++){
+                for (int j = 0; j < computerBoats.getPlacedBoats()[i].getBoatLength(); j++){
+                    if (computerBoats.getPlacedBoats()[i].getRowPosition()[j] == row -1 && computerBoats.getPlacedBoats()[i].getColumnPosition()[j] == column -1){
+                        touched = computerBoats.getPlacedBoats()[i];
+                        touched.tocar();
+                        if (touched.getTouched() == touched.getBoatLength()){
+                            computerBoats.hundirBarco(i);
+                            sunken = true;
                         }
                         break;
                     }
                 }
             }
-            if (hundido){
-                System.out.print("Tablero Jugador --- ¡HUNDISTE UN BARCO DE TAMAÑO: "+barcoTocado.getLonguitud()+" Y ACERTASTE EN ("+letraRecogida+", "+columna+"), JUEGAS DE NUEVO!");
+            if (sunken){
+                System.out.print("Player Table --- ¡FINALLY! SUNKEN BOAT LENGTH: "+ touched.getBoatLength()+" AT ("+ pickedLetter +", "+ column +"), YOUR TURN AGAIN!");
             }else {
-                System.out.print("Tablero Jugador --- ¡ACERTASTE EN ("+letraRecogida+", "+columna+"), JUEGAS DE NUEVO!");
+                System.out.print("Player Table --- ¡BOAT HIT AT ("+ pickedLetter +", "+ column +"), YOUR TURN AGAIN!");
             }
-            System.out.println("\nTablero Ordenador");
-            Battleships.mostrarTablero(tableroJugador);
+            System.out.println("\nComputer Table");
+            Battleships.showTable(playerTable);
             System.out.println("\n");
-            Battleships.mostrarTableroOculto(tableroOrdenador);
-            if (barcosOrdenador.getNumHundidos() == 5){
-                System.out.println("\n¡ENHORABUENA, HAS GANADO AL ORDENADOR!");
+            Battleships.showHiddenTable(computerTable);
+            if (computerBoats.getSunkenNum() == 5){
+                System.out.println("\n¡CONGRATULATIONS, YOU WIN THE COMPUTER!");
             }else {
-                tableroOrdenador = turnoJugador(tableroOrdenador, tableroJugador, barcosOrdenador);
+                computerTable = playerTurn(computerTable, playerTable, computerBoats);
             }
         }
-        else if (tableroOrdenador[fila-1][columna-1] == 0){
-            tableroOrdenador[fila-1][columna-1] = 3;
-            System.out.print("Tablero Jugador --- ¡AGUA EN ("+letraRecogida+", "+columna+")!");
+        else if (computerTable[row -1][column -1] == 0){
+            computerTable[row -1][column -1] = 3;
+            System.out.print("Player Table --- ¡NOTHING HIT AT ("+ pickedLetter +", "+ column +")!");
         }
-        else if (tableroOrdenador[fila-1][columna-1] == 2 || tableroOrdenador[fila-1][columna-1] == 3){
-            System.out.println("Tablero Jugador --- ¡YA HAS PROBADO ESTA UBICACIÓN, PRUEBA DE NUEVO!");
-            tableroOrdenador = turnoJugador(tableroOrdenador, tableroJugador, barcosOrdenador);
+        else if (computerTable[row -1][column -1] == 2 || computerTable[row -1][column -1] == 3){
+            System.out.println("Player Table --- ¡YOU HAVE ALREADY HIT THIS POSITION, TRY ANOTHER ONE!");
+            computerTable = playerTurn(computerTable, playerTable, computerBoats);
         }
-        return tableroOrdenador;
+        return computerTable;
     }
 
-    public static int[][] turnoOrdenador(int [][] tableroJugador, boolean acierto, boolean segundoAcierto, int direccionAnterior,int filaAnterior, int columnaAnterior, BarcosJugador barcosJugador, BarcosJugador barcosOrdenador){
-        int filaOr = 1, columnaOr= 1, random = 0;
+    public static int[][] turnoOrdenador(int [][] tableroJugador, boolean hit, boolean secondHit, int previousDirection, int previousRow, int previousColumn, PlayersBoats playersBoats){
+        int rowComputer = 1, columnComputer = 1, random = 0;
         boolean hundido = false;
-        String letras = "ABCDEFGHIJ";
-        Barco barcoTocado = null;
-        char filaLetra = 'A';
-        if (!acierto){
-            filaLetra = (char) (Math.random()*10+'A');
-            filaOr = Battleships.leerPosicionLetras(String.valueOf(filaLetra));
-            columnaOr = (int) (Math.random()*(11 - 1)) + 1;
+        String letters = "ABCDEFGHIJ";
+        Boat touchedBoat = null;
+        char letterRow = 'A';
+        if (!hit){
+            letterRow = (char) (Math.random()*10+'A');
+            rowComputer = Battleships.readLetterPosition(String.valueOf(letterRow));
+            columnComputer = (int) (Math.random()*(11 - 1)) + 1;
         }
         else {
-            if (!segundoAcierto){
+            if (!secondHit){
                 random = (int) (Math.random()*(5 - 1)) + 1;
                 switch (random) {
                     case 1 -> {
-                        if ((filaAnterior + 1) != 11) {
-                            filaOr = filaAnterior + 1;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousRow + 1) != 11) {
+                            rowComputer = previousRow + 1;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            filaOr = filaAnterior - 1;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            rowComputer = previousRow - 1;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                     case 2 -> {
-                        if ((filaAnterior - 1) != 0) {
-                            filaOr = filaAnterior - 1;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousRow - 1) != 0) {
+                            rowComputer = previousRow - 1;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            filaOr = filaAnterior + 1;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            rowComputer = previousRow + 1;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                     case 3 -> {
-                        if ((columnaAnterior + 1) != 11) {
-                            columnaOr = columnaAnterior + 1;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousColumn + 1) != 11) {
+                            columnComputer = previousColumn + 1;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            columnaOr = columnaAnterior - 1;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            columnComputer = previousColumn - 1;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                     case 4 -> {
-                        if ((columnaAnterior - 1) != 0) {
-                            columnaOr = columnaAnterior - 1;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousColumn - 1) != 0) {
+                            columnComputer = previousColumn - 1;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            columnaOr = columnaAnterior + 1;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            columnComputer = previousColumn + 1;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                 }
             }
             else {
-                switch (direccionAnterior) {
+                switch (previousDirection) {
                     case 1 -> {
-                        if ((filaAnterior + 1) != 11) {
-                            filaOr = filaAnterior + 1;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousRow + 1) != 11) {
+                            rowComputer = previousRow + 1;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            filaOr = filaAnterior - 2;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            rowComputer = previousRow - 2;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                     case 2 -> {
-                        if ((filaAnterior - 1) != 0) {
-                            filaOr = filaAnterior - 1;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousRow - 1) != 0) {
+                            rowComputer = previousRow - 1;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            filaOr = filaAnterior + 2;
-                            columnaOr = columnaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            rowComputer = previousRow + 2;
+                            columnComputer = previousColumn;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                     case 3 -> {
-                        if ((columnaAnterior + 1) != 11) {
-                            columnaOr = columnaAnterior + 1;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousColumn + 1) != 11) {
+                            columnComputer = previousColumn + 1;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            columnaOr = columnaAnterior - 2;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            columnComputer = previousColumn - 2;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                     case 4 -> {
-                        if ((columnaAnterior - 1) != 0) {
-                            columnaOr = columnaAnterior - 1;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                        if ((previousColumn - 1) != 0) {
+                            columnComputer = previousColumn - 1;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         } else {
-                            columnaOr = columnaAnterior + 2;
-                            filaOr = filaAnterior;
-                            filaLetra = letras.charAt(filaOr-1);
+                            columnComputer = previousColumn + 2;
+                            rowComputer = previousRow;
+                            letterRow = letters.charAt(rowComputer -1);
                             break;
                         }
                     }
                 }
             }
         }
-        if (tableroJugador[filaOr-1][columnaOr-1] == 1){
-            tableroJugador[filaOr-1][columnaOr-1] = 2;
-            for (int i = 0; i < barcosJugador.getNumColocados(); i++){
-                for (int j = 0; j < barcosJugador.getBarcosColocados()[i].getLonguitud(); j++){
-                    if (barcosJugador.getBarcosColocados()[i].getPosicionFila()[j] == filaOr-1 && barcosJugador.getBarcosColocados()[i].getPosicionColumna()[j] == columnaOr-1){
-                        barcoTocado = barcosJugador.getBarcosColocados()[i];
-                        barcoTocado.tocar();
-                        if (barcoTocado.getTocado() == barcoTocado.getLonguitud()){
-                            barcosJugador.hundirBarco(i);
+        if (tableroJugador[rowComputer -1][columnComputer -1] == 1){
+            tableroJugador[rowComputer -1][columnComputer -1] = 2;
+            for (int i = 0; i < playersBoats.getPlacedNum(); i++){
+                for (int j = 0; j < playersBoats.getPlacedBoats()[i].getBoatLength(); j++){
+                    if (playersBoats.getPlacedBoats()[i].getRowPosition()[j] == rowComputer -1 && playersBoats.getPlacedBoats()[i].getColumnPosition()[j] == columnComputer -1){
+                        touchedBoat = playersBoats.getPlacedBoats()[i];
+                        touchedBoat.tocar();
+                        if (touchedBoat.getTouched() == touchedBoat.getBoatLength()){
+                            playersBoats.hundirBarco(i);
                             hundido = true;
                         }
                         break;
@@ -423,95 +374,95 @@ public class Battleships {
                 }
             }
             if (hundido){
-                System.out.print("\nTablero Ordenador --- ¡EL ORDENADOR HUNDIÓ UN BARCO DE TAMAÑO: "+barcoTocado.getLonguitud()+" Y EL ORDENADOR ACERTÓ EN ("+filaLetra+", "+columnaOr+"), JUEGA DE NUEVO!");
+                System.out.print("\nTablero Ordenador --- ¡EL ORDENADOR HUNDIÓ UN BARCO DE TAMAÑO: "+ touchedBoat.getBoatLength()+" Y EL ORDENADOR ACERTÓ EN ("+ letterRow +", "+ columnComputer +"), JUEGA DE NUEVO!");
             }else {
-                System.out.print("\nTablero Ordenador --- ¡EL ORDENADOR ACERTÓ EN ("+filaLetra+", "+columnaOr+"), JUEGA DE NUEVO!");
+                System.out.print("\nTablero Ordenador --- ¡EL ORDENADOR ACERTÓ EN ("+ letterRow +", "+ columnComputer +"), JUEGA DE NUEVO!");
             }
-            if (acierto == true){
-                segundoAcierto = true;
-                direccionAnterior = random;
+            if (hit == true){
+                secondHit = true;
+                previousDirection = random;
             }
-            if (barcosJugador.getNumHundidos() == 5){
+            if (playersBoats.getSunkenNum() == 5){
                 System.out.println("\n¡HA GANADO EL ORDENADOR, MÁS SUERTE LA PRÓXIMA VEZ!");
             }else{
-                tableroJugador = turnoOrdenador(tableroJugador, true, segundoAcierto, direccionAnterior,filaOr, columnaOr, barcosJugador, barcosOrdenador);
+                tableroJugador = turnoOrdenador(tableroJugador, true, secondHit, previousDirection, rowComputer, columnComputer, playersBoats);
             }
         }
-        else if (tableroJugador[filaOr-1][columnaOr-1] == 0){
-            tableroJugador[filaOr-1][columnaOr-1] = 3;
-            System.out.println("\nTablero Ordenador --- ¡EL ORDENADOR FALLÓ EN ("+filaLetra+", "+columnaOr+")!");
+        else if (tableroJugador[rowComputer -1][columnComputer -1] == 0){
+            tableroJugador[rowComputer -1][columnComputer -1] = 3;
+            System.out.println("\nTablero Ordenador --- ¡EL ORDENADOR FALLÓ EN ("+ letterRow +", "+ columnComputer +")!");
         }
-        else if (tableroJugador[filaOr-1][columnaOr-1] == 2 || tableroJugador[filaOr-1][columnaOr-1] == 3){
-            if (direccionAnterior == 4){
-                direccionAnterior = 3;
-                columnaOr = columnaOr + 2;
-            }else if (direccionAnterior == 3){
-                direccionAnterior = 4;
-                columnaOr = columnaOr - 2;
+        else if (tableroJugador[rowComputer -1][columnComputer -1] == 2 || tableroJugador[rowComputer -1][columnComputer -1] == 3){
+            if (previousDirection == 4){
+                previousDirection = 3;
+                columnComputer = columnComputer + 2;
+            }else if (previousDirection == 3){
+                previousDirection = 4;
+                columnComputer = columnComputer - 2;
             }
-            else if (direccionAnterior == 2){
-                direccionAnterior = 1;
-                filaOr = filaOr + 2;
+            else if (previousDirection == 2){
+                previousDirection = 1;
+                rowComputer = rowComputer + 2;
             }
-            else if (direccionAnterior == 1){
-                direccionAnterior = 2;
-                filaOr = filaOr - 2;
+            else if (previousDirection == 1){
+                previousDirection = 2;
+                rowComputer = rowComputer - 2;
             }
-            tableroJugador = turnoOrdenador(tableroJugador, acierto, segundoAcierto, direccionAnterior,filaOr, columnaOr, barcosJugador, barcosOrdenador);
+            tableroJugador = turnoOrdenador(tableroJugador, hit, secondHit, previousDirection, rowComputer, columnComputer, playersBoats);
         }
         return tableroJugador;
     }
 
-    public static void mostrarTablero(int [][] tablero){
-        String letras = "ABCDEFGHIJ";
+    public static void showTable(int [][] table){
+        String letters = "ABCDEFGHIJ";
         System.out.println("\t  1 2 3 4 5 6 7 8 9 10");
         System.out.print("\t");
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[i].length; j++) {
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
 
                 if (j == 0){
-                    System.out.print(letras.charAt(i)+" ");
+                    System.out.print(letters.charAt(i)+" ");
                 }
-                if(tablero[i][j] == 0){
+                if(table[i][j] == 0){
                     System.out.print("^ ");
                 }
-                else if (tablero[i][j] == 1){
+                else if (table[i][j] == 1){
                     System.out.print("O ");
                 }
-                else if (tablero[i][j] == 2){
+                else if (table[i][j] == 2){
                     System.out.print("X ");
                 }
-                else if (tablero[i][j] == 3){
+                else if (table[i][j] == 3){
                     System.out.print("* ");
                 }
             }
-            if (i != tablero.length-1){
+            if (i != table.length-1){
                 System.out.println();
                 System.out.print("\t");
             }
         }
     }
 
-    public static void mostrarTableroOculto(int [][] tablero){
-        String letras = "ABCDEFGHIJ";
+    public static void showHiddenTable(int [][] table){
+        String letters = "ABCDEFGHIJ";
         System.out.println("\t  1 2 3 4 5 6 7 8 9 10");
         System.out.print("\t");
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[i].length; j++) {
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
                 if (j == 0){
-                    System.out.print(letras.charAt(i)+" ");
+                    System.out.print(letters.charAt(i)+" ");
                 }
-                if(tablero[i][j] == 0 || tablero[i][j] == 1){
+                if(table[i][j] == 0 || table[i][j] == 1){
                     System.out.print("^ ");
                 }
-                else if (tablero[i][j] == 2){
+                else if (table[i][j] == 2){
                     System.out.print("X ");
                 }
-                else if (tablero[i][j] == 3){
+                else if (table[i][j] == 3){
                     System.out.print("* ");
                 }
             }
-            if (i != tablero.length-1){
+            if (i != table.length-1){
                 System.out.println();
                 System.out.print("\t");
             }
@@ -519,28 +470,28 @@ public class Battleships {
         System.out.println();
     }
 
-    public static int[][] establecerBarcos(int[][] tablero, BarcosJugador barcosJugador){
-        int contador = 0, posicion = -1, barcoacolocar = -1, opcion = -1, fila;
+    public static int[][] establishBoats(int[][] table, PlayersBoats playerBoats){
+        int counter = 0, position = -1, boatToPlace = -1, option = -1, row;
         boolean tengoBarco = false;
         String letraRecogida;
-        Barco barcoActual = null;
-        while (contador != 5){
+        Boat boatActual = null;
+        while (counter != 5){
             System.out.print("\nIntroduzca una fila para colocar su barco [A..J]: ");
             letraRecogida = teclado.next();
-            fila = Battleships.leerPosicionLetras(letraRecogida);
-            int columna = Battleships.leerPosicionNumeros(1,10);
+            row = Battleships.readLetterPosition(letraRecogida);
+            int columna = Battleships.readNumberPosition(1,10);
             do {
                 try {
                     System.out.print("\n¿Cuál es el tamaño del barco que quieres colocar? ");
-                    barcoacolocar = Integer.parseInt(teclado.next());
+                    boatToPlace = Integer.parseInt(teclado.next());
                 }catch (NumberFormatException ex){
                     System.out.print("Dato no válido "+ex.getMessage());
                 }
-            }while (barcoacolocar == -1);
-            for (int i = 0; i < barcosJugador.getNumBarcos(); i++){
-                if (barcosJugador.getBarcos()[i].getLonguitud() == barcoacolocar){
-                    barcoActual = barcosJugador.getBarcos()[i];
-                    posicion = i;
+            }while (boatToPlace == -1);
+            for (int i = 0; i < playerBoats.getBoatsNum(); i++){
+                if (playerBoats.getBarcos()[i].getBoatLength() == boatToPlace){
+                    boatActual = playerBoats.getBarcos()[i];
+                    position = i;
                     tengoBarco= true;
                     break;
                 }
@@ -551,240 +502,239 @@ public class Battleships {
                 do {
                     try {
                         System.out.print("\nElección: ");
-                        opcion = Integer.parseInt(teclado.next());
+                        option = Integer.parseInt(teclado.next());
                     }catch (NumberFormatException ex){
                         System.out.println("Dato no válido "+ex.getMessage());
                     }
-                }while (opcion == -1);
-                boolean comprobacion = Battleships.comprobarColocaccion(tablero,opcion,fila,columna,barcoacolocar,"jugador", barcoActual);
+                }while (option == -1);
+                boolean comprobacion = Battleships.checkPosition(table, option, row,columna, boatToPlace,"player", boatActual);
                 if (comprobacion){
-                    barcosJugador.moverBarco(posicion);
-                    contador++;
-                    if (contador == 5){
-                        System.out.println("\nHas puesto: "+contador+" de 5 barcos");
+                    playerBoats.moveBoat(position);
+                    counter++;
+                    if (counter == 5){
+                        System.out.println("\nHas puesto: "+ counter +" de 5 barcos");
                     }
                     else {
-                        System.out.println("\nHas puesto: "+contador+" de 5 barcos\n");
+                        System.out.println("\nHas puesto: "+ counter +" de 5 barcos\n");
                     }
                 }
             }
             else{
-                System.out.println("\nNo dispone de barcos de tamaño "+barcoacolocar+"\n");
+                System.out.println("\nNo dispone de barcos de tamaño "+ boatToPlace +"\n");
             }
             tengoBarco = false;
-            barcoacolocar = -1;
-            opcion = -1;
+            boatToPlace = -1;
+            option = -1;
             System.out.println("Tablero Jugador");
-            Battleships.mostrarTablero(tablero);
+            Battleships.showTable(table);
         }
-        return tablero;
+        return table;
     }
 
-    public static int[][] establecerBarcosOrdenador(int[][] tablero, BarcosJugador barcosOrdenador){
-        int contador = 0, posicion = -1;
-        Barco barcoActual = null;
-        boolean tengoBarco = false;
-        while (contador != 5){
-            char filaLetra = (char) (Math.random()*10+'A');
-            int fila = Battleships.leerPosicionLetras(String.valueOf(filaLetra));
-            int columna = (int) (Math.random()*(11 - 1)) + 1;
-            int barcoacolocar = (int) (Math.random()*(6 - 1)) + 1;
-            for (int i = 0; i < barcosOrdenador.getNumBarcos(); i++){
-                if (barcosOrdenador.getBarcos()[i].getLonguitud() == barcoacolocar){
-                    barcoActual = barcosOrdenador.getBarcos()[i];
-                    posicion = i;
-                    tengoBarco= true;
+    public static int[][] establishComputerBoats(int[][] table, PlayersBoats computerBoats){
+        int counter = 0, position = -1;
+        Boat actualBoat = null;
+        boolean haveBoat = false;
+        while (counter != 5){
+            char letterRow = (char) (Math.random()*10+'A');
+            int row = Battleships.readLetterPosition(String.valueOf(letterRow));
+            int column = (int) (Math.random()*(11 - 1)) + 1;
+            int boatToPlace = (int) (Math.random()*(6 - 1)) + 1;
+            for (int i = 0; i < computerBoats.getBoatsNum(); i++){
+                if (computerBoats.getBarcos()[i].getBoatLength() == boatToPlace){
+                    actualBoat = computerBoats.getBarcos()[i];
+                    position = i;
+                    haveBoat = true;
                     break;
                 }
             }
-            if (tengoBarco){
-                int opcion = (int) (Math.random()*(5 - 1)) + 1;
-                boolean comprobacion = Battleships.comprobarColocaccion(tablero,opcion,fila,columna,barcoacolocar,"ordenador", barcoActual);
+            if (haveBoat){
+                int option = (int) (Math.random()*(5 - 1)) + 1;
+                boolean comprobacion = Battleships.checkPosition(table, option, row, column, boatToPlace,"computer", actualBoat);
                 if (comprobacion){
-                    barcosOrdenador.moverBarco(posicion);
-                    contador++;
+                    computerBoats.moveBoat(position);
+                    counter++;
                 }
             }
-            tengoBarco = false;
+            haveBoat = false;
         }
-        return tablero;
+        return table;
     }
 
-    public static int leerPosicionLetras(String opcionletra){
-        int opcion = -1;
-        String letras = "ABCDEFGHIJ";
+    public static int readLetterPosition(String letterOption){
+        int option = -1;
+        String letters = "ABCDEFGHIJ";
         do {
-            for (int i = 0; i < letras.length(); i++){
-                if (String.valueOf(letras.charAt(i)).equals(opcionletra)){
-                    opcion = i+1;
-                    return opcion;
+            for (int i = 0; i < letters.length(); i++){
+                if (String.valueOf(letters.charAt(i)).equals(letterOption)){
+                    option = i+1;
+                    return option;
                 }
             }
-            System.out.println("Recuerda que es una letra y en mayúsculas");
-            System.out.print("\nIntroduzca una fila para colocar su barco de  [A..J]: ");
-            opcionletra = teclado.next();
-        } while (opcion == -1);
-        return opcion;
+            System.out.println("Remember to introduce a letter");
+            System.out.print("\nIntroduce a row to place your boat [A..J]: ");
+            letterOption = teclado.next();
+        } while (true);
     }
 
-    public static int leerPosicionNumeros(int minimo, int maximo){
-        int entero = -1;
+    public static int readNumberPosition(int min, int max){
+        int number = -1;
         do {
             try {
-                System.out.print("Introduzca una columna para colocar su barco [1..10]: ");
-                entero = Integer.parseInt(teclado.next());
+                System.out.print("Introduce a column to place your boat [1..10]: ");
+                number = Integer.parseInt(teclado.next());
             }catch (NumberFormatException ex){
-                System.out.println("Dato no válido "+ex.getMessage());
+                System.out.println("Invalid data "+ex.getMessage());
             }
-        } while(entero < minimo || entero > maximo);
-        return entero;
+        } while(number < min || number > max);
+        return number;
     }
 
-    public static boolean comprobarColocaccion(int[][] tablero, int opcion,int fila,int columna,int barcoacolocar, String pertenece, Barco barcoActual){
-        int versiesvalido = 0;
-        if (opcion == 1){
-            if (fila < barcoacolocar){
-                if (pertenece.equals("jugador")){
-                    System.out.println("\nBarco demasiado grande para esta posición, pruebe a colocarlo de nuevo\n");
+    public static boolean checkPosition(int[][] table, int option, int row, int column, int boatToPlace, String belongs, Boat actualBoat){
+        int isValid = 0;
+        if (option == 1){
+            if (row < boatToPlace){
+                if (belongs.equals("player")){
+                    System.out.println("\nBoat too big for this position, try to place it in other location\n");
                 }
                 return false;
             }
             else {
-                if (tablero[fila-1][columna-1] != 1){
-                    for(int j = fila-1;j > fila-1-barcoacolocar;j--){
-                        if(tablero[j][columna-1] != 1){
-                            versiesvalido++;
+                if (table[row -1][column -1] != 1){
+                    for(int j = row -1; j > row -1- boatToPlace; j--){
+                        if(table[j][column -1] != 1){
+                            isValid++;
                         }
                     }
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
-                if (versiesvalido == barcoacolocar){
-                    for(int j = fila-1;j > fila-1-barcoacolocar;j--){
-                        barcoActual.añadirFila(j);
-                        barcoActual.añadirColumna(columna-1);
-                        tablero[j][columna-1] = 1;
+                if (isValid == boatToPlace){
+                    for(int j = row -1; j > row -1- boatToPlace; j--){
+                        actualBoat.addRow(j);
+                        actualBoat.addColumn(column -1);
+                        table[j][column -1] = 1;
                     }
                     return true;
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
             }
         }
-        if (opcion == 2){
-            if (fila-1+barcoacolocar > 10){
-                if (pertenece.equals("jugador")){
-                    System.out.println("\nBarco demasiado grande para esta posición, pruebe a colocarlo de nuevo\n");
+        if (option == 2){
+            if (row -1+ boatToPlace > 10){
+                if (belongs.equals("player")){
+                    System.out.println("\nBoat too big for this position, try to place it in other location\n");
                 }
                 return false;
             }
             else {
-                if (tablero[fila-1][columna-1] != 1){
-                    for(int j = fila-1;j < fila-1+barcoacolocar;j++){
-                        if(tablero[j][columna-1] != 1){
-                            versiesvalido++;
+                if (table[row -1][column -1] != 1){
+                    for(int j = row -1; j < row -1+ boatToPlace; j++){
+                        if(table[j][column -1] != 1){
+                            isValid++;
                         }
                     }
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
-                if (versiesvalido == barcoacolocar){
-                    for(int j = fila-1;j < fila-1+barcoacolocar;j++){
-                        barcoActual.añadirFila(j);
-                        barcoActual.añadirColumna(columna-1);
-                        tablero[j][columna-1] = 1;
+                if (isValid == boatToPlace){
+                    for(int j = row -1; j < row -1+ boatToPlace; j++){
+                        actualBoat.addRow(j);
+                        actualBoat.addColumn(column -1);
+                        table[j][column -1] = 1;
                     }
                     return true;
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
             }
         }
-        if (opcion == 3){
-            if (columna < barcoacolocar){
-                if (pertenece.equals("jugador")){
-                    System.out.println("\nBarco demasiado grande para esta posición, pruebe a colocarlo de nuevo\n");
+        if (option == 3){
+            if (column < boatToPlace){
+                if (belongs.equals("player")){
+                    System.out.println("\nBoat too big for this position, try to place it in other location\n");
                 }
                 return false;
             }
             else {
-                if (tablero[fila-1][columna-1] != 1){
-                    for(int j = columna-1; j > columna-1-barcoacolocar;j--){
-                        if(tablero[fila-1][j] != 1){
-                            versiesvalido++;
+                if (table[row -1][column -1] != 1){
+                    for(int j = column -1; j > column -1- boatToPlace; j--){
+                        if(table[row -1][j] != 1){
+                            isValid++;
                         }
                     }
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
-                if (versiesvalido == barcoacolocar){
-                    for(int j = columna-1; j > columna-1-barcoacolocar;j--){
-                        barcoActual.añadirFila(fila-1);
-                        barcoActual.añadirColumna(j);
-                        tablero[fila-1][j] = 1;
+                if (isValid == boatToPlace){
+                    for(int j = column -1; j > column -1- boatToPlace; j--){
+                        actualBoat.addRow(row -1);
+                        actualBoat.addColumn(j);
+                        table[row -1][j] = 1;
                     }
                     return true;
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
             }
         }
-        if (opcion == 4){
-            if (columna-1+barcoacolocar > 10){
-                if (pertenece.equals("jugador")){
-                    System.out.println("\nBarco demasiado grande para esta posición, pruebe a colocarlo de nuevo\n");
+        if (option == 4){
+            if (column -1+ boatToPlace > 10){
+                if (belongs.equals("player")){
+                    System.out.println("\nBoat too big for this position, try to place it in other location\n");
                 }
                 return false;
             }
             else {
-                if (tablero[fila-1][columna-1] != 1){
-                    for(int j = columna-1; j < columna-1+barcoacolocar;j++){
-                        if(tablero[fila-1][j] != 1){
-                            versiesvalido++;
+                if (table[row -1][column -1] != 1){
+                    for(int j = column -1; j < column -1+ boatToPlace; j++){
+                        if(table[row -1][j] != 1){
+                            isValid++;
                         }
                     }
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
-                if (versiesvalido == barcoacolocar){
-                    for(int j = columna-1; j < columna-1+barcoacolocar;j++){
-                        barcoActual.añadirFila(fila-1);
-                        barcoActual.añadirColumna(j);
-                        tablero[fila-1][j] = 1;
+                if (isValid == boatToPlace){
+                    for(int j = column -1; j < column -1+ boatToPlace; j++){
+                        actualBoat.addRow(row -1);
+                        actualBoat.addColumn(j);
+                        table[row -1][j] = 1;
                     }
                     return true;
                 }
                 else{
-                    if (pertenece.equals("jugador")){
-                        System.out.println("\nYa hay un barco en estas casillas\n");
+                    if (belongs.equals("player")){
+                        System.out.println("\nThere is already a boat on this position\n");
                     }
                     return false;
                 }
