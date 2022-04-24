@@ -378,7 +378,7 @@ public class Battleships {
             }else {
                 System.out.print("\nTablero Ordenador --- ¡EL ORDENADOR ACERTÓ EN ("+ letterRow +", "+ columnComputer +"), JUEGA DE NUEVO!");
             }
-            if (hit == true){
+            if (hit){
                 secondHit = true;
                 previousDirection = random;
             }
