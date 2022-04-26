@@ -1,11 +1,10 @@
 public class PlayersBoats {
-    private Boat[] boats, placedBoats, sunkenBoats;
+    private Boat[] boats, placedBoats;
     private int boatsNum, sunkenNum, placedNum;
 
     public PlayersBoats() {
         this.boats = new Boat[5];
         this.placedBoats = new Boat[5];
-        this.sunkenBoats = new Boat[5];
         this.boatsNum = 0;
         this.sunkenNum = 0;
         this.placedNum = 0;
@@ -31,7 +30,6 @@ public class PlayersBoats {
     }
 
     public void hundirBarco(int i){
-        sunkenBoats[sunkenNum] = placedBoats[i];
         for (int j = i; j < placedNum; j++){
             if (j == placedNum -1){
                 placedBoats[j] = null;
@@ -66,14 +64,6 @@ public class PlayersBoats {
 
     public void setPlacedBoats(Boat[] placedBoats) {
         this.placedBoats = placedBoats;
-    }
-
-    public Boat[] getSunkenBoats() {
-        return sunkenBoats;
-    }
-
-    public void setSunkenBoats(Boat[] sunkenBoats) {
-        this.sunkenBoats = sunkenBoats;
     }
 
     public int getSunkenNum() {
