@@ -1,6 +1,7 @@
 public class PlayersBoats {
     private Boat[] boats, placedBoats;
-    private int boatsNum, sunkenNum, placedNum;
+    private int boatsNum, sunkenNum, placedNum, columnHit, rowHit;
+    private boolean hit;
 
     public PlayersBoats() {
         this.boats = new Boat[5];
@@ -8,6 +9,7 @@ public class PlayersBoats {
         this.boatsNum = 0;
         this.sunkenNum = 0;
         this.placedNum = 0;
+        this.hit = false;
     }
 
     public void addBoat(Boat boat){
@@ -71,6 +73,30 @@ public class PlayersBoats {
 
     public void setPlacedNum(int placedNum) {
         this.placedNum = placedNum;
+    }
+
+    public int getColumnHit() {
+        return columnHit;
+    }
+
+    public void setColumnHit(int columnHit) {
+        this.columnHit = columnHit;
+    }
+
+    public int getRowHit() {
+        return rowHit;
+    }
+
+    public void setRowHit(int rowHit) {
+        this.rowHit = rowHit;
+    }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    public void setHit(boolean hit) {
+        this.hit = hit;
     }
 }
 
