@@ -29,16 +29,7 @@ public class PlayersBoats {
         placedNum++;
     }
 
-    public void hundirBarco(int i){
-        for (int j = i; j < placedNum; j++){
-            if (j == placedNum -1){
-                placedBoats[j] = null;
-                placedNum--;
-            }
-            else {
-                placedBoats[j] = placedBoats[j+1];
-            }
-        }
+    public void sunkBoat(){
         sunkenNum++;
     }
 
