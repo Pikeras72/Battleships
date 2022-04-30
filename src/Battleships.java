@@ -224,19 +224,70 @@ public class Battleships {
         }
         else if (computerTable[row -1][column -1] == 2 || computerTable[row -1][column -1] == 3){
             System.out.println("¡YOU HAVE ALREADY HIT THIS POSITION, TRY ANOTHER ONE!");
+            turn = true;
             Battleships.showTable(playerTable, computerTable);
         }
         return turn;
     }
 
     public static boolean computerTurn(int [][] playerTable, PlayersBoats playerBoats){
-        int rowComputer, columnComputer;
-        boolean sunk = false, turn = false;
+        int rowComputer, columnComputer, cnt = 0;
+        boolean sunk = false, turn = false, cnt1 = false, cnt2 = false, cnt3 = false;
         Boat touchedBoat = null;
+        String letters = "ABCDEFGHIJ";
         char letterRow;
-        letterRow = (char) (Math.random()*10+'A');
-        rowComputer = readLetterPosition(String.valueOf(letterRow));
-        columnComputer = (int) (Math.random()*(11 - 1)) + 1;
+        if (!playerBoats.isHit()){
+            letterRow = (char) (Math.random()*10+'A');
+            rowComputer = readLetterPosition(String.valueOf(letterRow));
+            columnComputer = (int) (Math.random()*(11 - 1)) + 1;
+        }else{
+            rowComputer = playerBoats.getRowHit();
+            columnComputer = playerBoats.getColumnHit();
+            while (playerTable[rowComputer -1][columnComputer -1] == 2 || playerTable[rowComputer -1][columnComputer -1] == 3){
+                if (cnt == 0 && rowComputer+1 != 11){
+                    rowComputer++;
+                    cnt1 = true;
+                }else if(cnt == 1 && columnComputer+1 != 11){
+                    if (cnt1){
+                        rowComputer--;
+                        columnComputer++;
+                    }else{
+                        columnComputer++;
+                    }
+                    cnt2 = true;
+                }else if(cnt == 2 && columnComputer-1 != 0){
+                    if (cnt2  && columnComputer-2 != 0){
+                        columnComputer--;
+                        columnComputer--;
+                    }else if (cnt1){
+                        rowComputer--;
+                        columnComputer--;
+                    }else{
+                        columnComputer--;
+                    }
+                    cnt3 = true;
+                }else if(cnt == 3 && rowComputer-1 != 0){
+                    if (cnt3){
+                        columnComputer++;
+                        rowComputer--;
+                    }else if(cnt2){
+                        columnComputer--;
+                        rowComputer--;
+                    }else if(cnt1){
+                        rowComputer--;
+                        rowComputer--;
+                    }else{
+                        rowComputer--;
+                    }
+                }else if (cnt > 3){
+                    letterRow = (char) (Math.random()*10+'A');
+                    rowComputer = readLetterPosition(String.valueOf(letterRow));
+                    columnComputer = (int) (Math.random()*(11 - 1)) + 1;
+                }
+                cnt++;
+            }
+            letterRow = letters.charAt(rowComputer-1);
+        }
         if (playerTable[rowComputer -1][columnComputer -1] == 1){
             playerTable[rowComputer -1][columnComputer -1] = 2;
             for (int i = 0; i < playerBoats.getPlacedNum() && !turn; i++){
@@ -255,8 +306,12 @@ public class Battleships {
             }
             if (sunk){
                 System.out.println("¡THE COMPUTER SUNK A BOAT OF LENGTH: "+ touchedBoat.getBoatLength()+" AT ("+ letterRow +", "+ columnComputer +"), PLAYS AGAIN!");
+                playerBoats.setHit(false);
             }else {
                 System.out.println("¡THE COMPUTER HIT A BOAT AT ("+ letterRow +", "+ columnComputer +"), PLAYS AGAIN!");
+                playerBoats.setHit(true);
+                playerBoats.setRowHit(rowComputer);
+                playerBoats.setColumnHit(columnComputer);
             }
             if (playerBoats.getSunkenNum() == 5){
                 System.out.println("¡THE COMPUTER WON, MORE LUCK NEXT TIME!");
@@ -264,6 +319,9 @@ public class Battleships {
             }
         }
         else if (playerTable[rowComputer -1][columnComputer -1] == 0){
+            if (playerBoats.isHit() && cnt > 4){
+                playerBoats.setHit(false);
+            }
             playerTable[rowComputer -1][columnComputer -1] = 3;
             System.out.println("¡THE COMPUTER MISS AT ("+ letterRow +", "+ columnComputer +")!");
         }
