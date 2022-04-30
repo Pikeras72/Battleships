@@ -250,10 +250,8 @@ public class Battleships {
                 }else if(cnt == 1 && columnComputer+1 != 11){
                     if (cnt1){
                         rowComputer--;
-                        columnComputer++;
-                    }else{
-                        columnComputer++;
                     }
+                    columnComputer++;
                     cnt2 = true;
                 }else if(cnt == 2 && columnComputer-1 != 0){
                     if (cnt2  && columnComputer-2 != 0){
