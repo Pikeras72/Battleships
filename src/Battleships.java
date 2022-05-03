@@ -164,23 +164,23 @@ public class Battleships {
 
     public static void play(int[][] playerTable, int[][] computerTable, PlayersBoats playerBoats, PlayersBoats computerBoats){
         boolean playerTurn, computerTurn;
-        Battleships.showTable(playerTable, computerTable);
-        establishBoats(playerTable, playerBoats, computerTable);
+        Battleships.showTable(playerTable, computerTable, playerBoats, computerBoats);
+        establishBoats(playerTable, playerBoats, computerTable, computerBoats);
         establishComputerBoats(computerTable, computerBoats);
         while (playerBoats.getSunkenNum() != 5 && computerBoats.getSunkenNum() != 5){
             do {
-                playerTurn = playerTurn(computerTable, playerTable, computerBoats);
+                playerTurn = playerTurn(computerTable, playerTable, computerBoats,playerBoats);
             }while (playerTurn);
             if (computerBoats.getSunkenNum() != 5){
                 do {
                     computerTurn = computerTurn(playerTable, playerBoats);
                 }while (computerTurn);
-                Battleships.showTable(playerTable, computerTable);
+                Battleships.showTable(playerTable, computerTable, playerBoats, computerBoats);
             }
         }
     }
 
-    public static boolean playerTurn(int [][] computerTable, int[][] playerTable, PlayersBoats computerBoats){
+    public static boolean playerTurn(int [][] computerTable, int[][] playerTable, PlayersBoats computerBoats, PlayersBoats playersBoats){
         Boat touchedBoat = null;
         String letters = "ABCDEFGHIJ";
         boolean sunken = false, turn = false;
@@ -212,7 +212,7 @@ public class Battleships {
             }else {
                 System.out.println("¡BOAT HIT AT ("+ pickedLetter +", "+ column +"), YOUR TURN AGAIN!");
             }
-            Battleships.showTable(playerTable, computerTable);
+            Battleships.showTable(playerTable, computerTable, playersBoats, computerBoats);
             if (computerBoats.getSunkenNum() == 5){
                 System.out.println("\n¡CONGRATULATIONS, YOU WIN THE COMPUTER!");
                 turn = false;
@@ -225,7 +225,7 @@ public class Battleships {
         else if (computerTable[row -1][column -1] == 2 || computerTable[row -1][column -1] == 3){
             System.out.println("¡YOU HAVE ALREADY HIT THIS POSITION, TRY ANOTHER ONE!");
             turn = true;
-            Battleships.showTable(playerTable, computerTable);
+            Battleships.showTable(playerTable, computerTable, playersBoats, computerBoats);
         }
         return turn;
     }
@@ -329,7 +329,7 @@ public class Battleships {
         return turn;
     }
 
-    public static void showTable(int [][] playerTable, int[][] computerTable){
+    public static void showTable(int [][] playerTable, int[][] computerTable, PlayersBoats playersBoats, PlayersBoats computerBoats){
         String letters = "ABCDEFGHIJ";
         System.out.println("Player Table\t\t\t\t\t\t Computer Table");
         System.out.println("\t  1 2 3 4 5 6 7 8 9 10\t\t\t\t  1 2 3 4 5 6 7 8 9 10");
@@ -352,7 +352,29 @@ public class Battleships {
                     System.out.print("* ");
                 }
             }
-            System.out.print("\t\t\t\t");
+            if (i == 0){
+                System.out.print("    Sunken    ");
+            }else if (i == 1){
+                System.out.print("    ships     ");
+            }else if (i == 2){
+                System.out.print("\t     \\\\   \t");
+            }else if (i == 3){
+                System.out.print("   "+computerBoats.getSunkenNum()+"   ||   \t");
+            }else if (i == 4){
+                System.out.print("\t     ||    \t");
+            }else if (i == 5){
+                System.out.print("\t    //   \t");
+            }else if (i == 6){
+                System.out.print("\t   //     \t");
+            }else if (i == 7){
+                System.out.print("\t  ||       \t");
+            }else if (i == 8){
+                System.out.print("\t  ||   "+playersBoats.getSunkenNum()+"   \t");
+            }else if (i == 9){
+                System.out.print("\t  \\\\       \t");
+            }else{
+                System.out.print("\t\t\t\t");
+            }
             for (int j = 0; j < computerTable[i].length; j++) {
                 if (j == 0){
                     System.out.print(letters.charAt(i)+" ");
@@ -373,7 +395,7 @@ public class Battleships {
         System.out.println();
     }
 
-    public static void establishBoats(int[][] table, PlayersBoats playerBoats, int[][] computerTable){
+    public static void establishBoats(int[][] table, PlayersBoats playerBoats, int[][] computerTable, PlayersBoats computerBoats){
         int counter = 0, position = -1, boatToPlace = -1, option = -1, row;
         boolean gotBoat = false;
         String letterReaded;
@@ -428,7 +450,7 @@ public class Battleships {
             gotBoat = false;
             boatToPlace = -1;
             option = -1;
-            Battleships.showTable(table, computerTable);
+            Battleships.showTable(table, computerTable, playerBoats, computerBoats);
         }
     }
 
